@@ -1,10 +1,6 @@
-# Server for mydraft
+# CodeSlide's Server
 
-Stores the documents in Google Cloud storage and provides a websocket interface for live collaboration over yjs.
+These are the programs located on the backend of [codeslide.net](https://www.codeslide.net).
 
-### Self hosting
-
-```
-docker build -t mydraft/app .
-docker run --name mydraft -d -p 8001:8001 -v ${PWD}/localFileStore:/mydraft/localFileStore mydraft/app
-```
+- /parser: A Python-powered Express program that returns a list of frames from user's script.
+- /compiler: A Python-powered Express program that returns an HTML from a json of SVGs.
