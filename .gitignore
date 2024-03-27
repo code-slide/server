@@ -1,0 +1,14 @@
+# Packages
+node_modules
+
+# Output files
+dist
+
+# local filestore
+tmp
+
+# cache
+__pycache__
+
+# MacOS
+.DS_Store
