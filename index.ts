@@ -22,7 +22,7 @@ app.all('/*', function (req, res, next) {
     next();
 });
 
-app.post('/parser', async (req, res) => {
+app.post('/api/parser', async (req, res) => {
     // Get script
     const data = req.body;
     let script = data.script;
@@ -35,7 +35,7 @@ app.post('/parser', async (req, res) => {
     return res.status(200).json({ frames: `${frames}`.trim() });
 });
 
-app.post('/compiler', async (req, res) => {
+app.post('/api/compiler', async (req, res) => {
     const data = req.body;
     const fileName = data.fileName;
     const TEMP = 'tmp';

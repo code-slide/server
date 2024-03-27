@@ -28,8 +28,8 @@ jobs:
         uses: docker/build-push-action@v4.2.1
         with:
           load: true
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          cache-from: type=local
+          cache-to: type=local,mode=max
           tags: on-local
 
       - name: Publish - Calculate Version
