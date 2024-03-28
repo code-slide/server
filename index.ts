@@ -24,13 +24,13 @@ app.all('/*', function (req, res, next) {
     next();
 });
 
-app.get('/api/health', (_, response) => {
+app.get('/health', (_, response) => {
     response.send({
         status: 'Healthy'
     });
 });
 
-app.post('/api/parser', async (req, res) => {
+app.post('/parser', async (req, res) => {
     // Get script
     const data = req.body;
     let script = data.script;
@@ -43,7 +43,7 @@ app.post('/api/parser', async (req, res) => {
     return res.status(200).json({ frames: `${frames}`.trim() });
 });
 
-app.post('/api/compiler', async (req, res) => {
+app.post('/compiler', async (req, res) => {
     const data = req.body;
     const fileName = data.fileName;
     const TEMP = 'tmp';
@@ -64,10 +64,10 @@ app.post('/api/compiler', async (req, res) => {
 });
 
 // Serving presentation through reveal.js
-app.use('/api/s', express.static(path.join(__dirname, TEMP)));
-app.use('/api/s/dist', express.static(path.join(__dirname, REVEAL, 'dist')));
-app.use('/api/s/plugin', express.static(path.join(__dirname, REVEAL, 'plugin')));
-app.get('/api/s/:file', function(req, res) {
+app.use('/s', express.static(path.join(__dirname, TEMP)));
+app.use('/s/dist', express.static(path.join(__dirname, REVEAL, 'dist')));
+app.use('/s/plugin', express.static(path.join(__dirname, REVEAL, 'plugin')));
+app.get('/s/:file', function(req, res) {
     res.sendFile(path.join(__dirname, TEMP, req.params.file));
 });
 
@@ -77,4 +77,4 @@ app.get('*', function(req, res) {
     res.sendFile(path.join(__dirname, UI, 'index.html'));
 });
 
-app.listen(Number(serverPort), () => console.log(`Listening on localhost:${serverPort}`));
+app.listen(Number(serverPort), () => console.log(`Listening on port ${serverPort}`));
