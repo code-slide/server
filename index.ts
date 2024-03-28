@@ -6,7 +6,7 @@ import path from 'path';
 import fileStore from './fileStore';
 import { spawnPython, execPython } from './utils/script';
 
-const serverPort = parseInt(process.env.SERVER_PORT || '8080');
+const serverPort = parseInt(process.env.PORT || process.env.SERVER_PORT || '8080');
 const storageBucket: typeof fileStore = fileStore;
 const UI = './ui/dist';
 const TEMP = '../tmp';
@@ -22,6 +22,12 @@ app.all('/*', function (req, res, next) {
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
+});
+
+app.get('/api/health', (_, response) => {
+    response.send({
+        status: 'Healthy'
+    });
 });
 
 app.post('/api/parser', async (req, res) => {
