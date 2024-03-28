@@ -2,18 +2,20 @@ import 'dotenv/config'
 import cors from 'cors';
 import express from 'express';
 import expressWebsockets from 'express-ws';
-import Reveal from 'reveal.js';
 import path from 'path';
 import fileStore from './fileStore';
 import { spawnPython, execPython } from './utils/script';
 
 const serverPort = parseInt(process.env.SERVER_PORT || '8080');
 const storageBucket: typeof fileStore = fileStore;
+const UI = './ui/dist';
+const TEMP = '../tmp';
+const REVEAL = '../node_modules/reveal.js';
 
 const { app } = expressWebsockets(express());
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 
 app.all('/*', function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -56,10 +58,17 @@ app.post('/api/compiler', async (req, res) => {
 });
 
 // Serving presentation through reveal.js
-const TEMP = path.join(__dirname, 'tmp');
-const REVEAL_JS_PATH = path.join(__dirname, 'node_modules', 'reveal.js'); 
-app.use('/s', express.static(TEMP));
-app.use('/s/dist', express.static(path.join(REVEAL_JS_PATH, 'dist')));
-app.use('/s/plugin', express.static(path.join(REVEAL_JS_PATH, 'plugin')));
+app.use('/api/s', express.static(path.join(__dirname, TEMP)));
+app.use('/api/s/dist', express.static(path.join(__dirname, REVEAL, 'dist')));
+app.use('/api/s/plugin', express.static(path.join(__dirname, REVEAL, 'plugin')));
+app.get('/api/s/:file', function(req, res) {
+    res.sendFile(path.join(__dirname, TEMP, req.params.file));
+});
+
+// Serving UI on index.html
+app.use('/', express.static(path.join(__dirname, UI), {}))
+app.get('*', function(req, res) {
+    res.sendFile(path.join(__dirname, UI, 'index.html'));
+});
 
 app.listen(Number(serverPort), () => console.log(`Listening on localhost:${serverPort}`));

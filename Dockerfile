@@ -1,7 +1,6 @@
-FROM node:21-alpine3.18
+FROM node:14-alpine3.14
 
-# get git
-RUN apk add --no-cache git bash
+RUN apk add --no-cache git bash python3
 
 WORKDIR /codeslide
 
@@ -21,10 +20,10 @@ RUN cd ./dist/ui && rm -rf ./package-lock.json
 RUN cd ./dist/ui && npm install
 RUN cd ./dist/ui && npm run build
 
-RUN mkdir ./tmp
+RUN rm -rf ./tmp && mkdir ./tmp
 RUN chmod -R a+rw ./tmp
 
 USER node
-EXPOSE 8001/tcp
+EXPOSE 5001/tcp
 
 CMD ["node", "./dist/index.js"]

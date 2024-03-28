@@ -3,9 +3,10 @@ node_modules
 
 # Output files
 dist
+package-lock.json
 
 # IDEs and editors
 .github
 .vscode
 .vs
-localFileStore
+tmp

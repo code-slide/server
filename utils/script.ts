@@ -2,7 +2,7 @@ import { spawn, exec } from 'child_process';
 
 export const spawnPython = (filePath: string, script: string) => {
     return new Promise((resolve, reject) => {
-        const python = spawn('python', [filePath, script]);
+        const python = spawn('python3', [filePath, script]);
         var result = '';
         python.stdout.on('data', (data: any) => {
             result += data.toString();
@@ -20,7 +20,7 @@ export const spawnPython = (filePath: string, script: string) => {
 
 export const execPython = (filePath: string, inputPath: string, outputPath: string) => {
     return new Promise((resolve, reject) => {
-        exec(`python ${filePath} ${inputPath} ${outputPath}`, (error, stdout, stderr) => {
+        exec(`python3 ${filePath} ${inputPath} ${outputPath}`, (error, stdout, stderr) => {
             if (error) {
                 console.error(`Error: ${error.message}`);
                 reject(error);
