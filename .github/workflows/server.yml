@@ -28,8 +28,8 @@ jobs:
         uses: docker/build-push-action@v4.2.1
         with:
           load: true
-          cache-from: type=local
-          cache-to: type=local,mode=max
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
           tags: on-local
 
       - name: Publish - Calculate Version
@@ -45,16 +45,16 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
           
       - name: Publish - Rename Tags
         if: github.event_name != 'pull_request'
         run: |
-          docker tag on-local ghcr.io/mydraft-cc/server2:dev
-          docker tag on-local ghcr.io/mydraft-cc/server2:dev-${{ env.BUILD_NUMBER }}
+          docker tag on-local ghcr.io/code-slide/server:dev
+          docker tag on-local ghcr.io/code-slide/server:dev-${{ env.BUILD_NUMBER }}
     
       - name: Publish - Push Tags
         if: github.event_name != 'pull_request'
         run: |
-          docker push ghcr.io/mydraft-cc/server2:dev
-          docker push ghcr.io/mydraft-cc/server2:dev-${{ env.BUILD_NUMBER }}
+          docker push ghcr.io/code-slide/server:dev
+          docker push ghcr.io/code-slide/server:dev-${{ env.BUILD_NUMBER }}

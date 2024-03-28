@@ -12,3 +12,7 @@ __pycache__
 
 # MacOS
 .DS_Store
+
+# Local env
+.secrets
+event.json
