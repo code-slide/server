@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Server for codeslide.net",
   "scripts": {
+    "start": "nodemon index.ts",
     "dev": "nodemon index.ts",
     "build": "tsc && node fileCopy.js"
   },
