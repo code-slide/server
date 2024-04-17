@@ -5,6 +5,7 @@ import expressWebsockets from 'express-ws';
 import path from 'path';
 import fileStore from './fileStore';
 import { spawnPython, execPython } from './utils/script';
+import { exec } from 'child_process';
 
 const serverPort = parseInt(process.env.PORT || process.env.SERVER_PORT || '8080');
 const storageBucket: typeof fileStore = fileStore;
@@ -60,15 +61,18 @@ app.post('/compiler', async (req, res) => {
     // Write html and send presentation link to client
     await execPython('utils/compile.py', `${TEMP}/${fileName}.json`, `${TEMP}/${fileName}.html`);
 
-    return res.status(200).json({ link: `s/${fileName}.html` });
+    return res.status(200).json({ 
+        slidePath: `s/${fileName}`,
+        pdfPath: `s/${fileName}?print-pdf`
+    });
 });
 
 // Serving presentation through reveal.js
 app.use('/s', express.static(path.join(__dirname, TEMP)));
 app.use('/s/dist', express.static(path.join(__dirname, REVEAL, 'dist')));
 app.use('/s/plugin', express.static(path.join(__dirname, REVEAL, 'plugin')));
-app.get('/s/:file', function(req, res) {
-    res.sendFile(path.join(__dirname, TEMP, req.params.file));
+app.get('/s/:filename', function(req, res) {
+    res.sendFile(path.join(__dirname, TEMP, `${req.params.filename}.html`));
 });
 
 // Serving UI on index.html

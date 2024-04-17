@@ -14,5 +14,6 @@ __pycache__
 .DS_Store
 
 # Local env
+.vscode
 .secrets
 event.json

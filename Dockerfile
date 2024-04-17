@@ -1,25 +1,19 @@
 FROM node:14-alpine3.14
+ARG ENV
 
 RUN apk add --no-cache git bash python3
-
 WORKDIR /codeslide
-
-# setup the server
 COPY . .
 
+# Setup the back-end
 RUN npm i
 RUN echo -e "\nVITE_SERVER_URL=/." >> ./.env
 RUN npm run build
 RUN cp ./.env ./dist/
 
-# setup the front-end
-RUN cd ./dist/ && git clone https://github.com/code-slide/ui.git
-
-# setup react app
-RUN cd ./dist/ui && echo "VITE_SERVER_URL=/." > ./.env
-RUN cd ./dist/ui && rm -rf ./package-lock.json
-RUN cd ./dist/ui && npm install
-RUN cd ./dist/ui && npm run build
+# Setup the front-end
+COPY ui.sh ui.sh
+RUN chmod +x ui.sh && ./ui.sh
 
 RUN rm -rf ./tmp && mkdir ./tmp
 RUN chmod -R a+rw ./tmp

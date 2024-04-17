@@ -7,6 +7,6 @@ These are the programs located on the backend of [codeslide.net](https://www.cod
 
 ## Self-host instruction
 ```
-docker build -t codeslide/app .
-docker run --name codeslide -d -p 8001:5001 -v ${PWD}/tmp:/codeslide/tmp codeslide/app
+docker build -t codeslide/dev --build-arg "ENV=DEV" .
+docker run --name codeslide -d -p 8001:5001 -v ${PWD}/tmp:/codeslide/tmp codeslide/dev
 ```
