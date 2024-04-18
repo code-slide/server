@@ -78,7 +78,11 @@ app.get('/s/:filename', function(req, res) {
 // Serving UI on index.html
 app.use('/', express.static(path.join(__dirname, UI), {}))
 app.get('*', function(req, res) {
-    res.sendFile(path.join(__dirname, UI, 'index.html'));
+    res.sendFile(path.join(__dirname, UI, 'index.html'), function(err) {
+        if (err) {
+            res.redirect('https://www.codeslide.net/');
+        }
+    });
 });
 
 app.listen(Number(serverPort), () => console.log(`Listening on port ${serverPort}`));
