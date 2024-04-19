@@ -1,4 +1,4 @@
-FROM node:14-alpine3.14
+FROM node:21-alpine3.18
 ARG ENV
 
 RUN apk add --no-cache git bash python3
