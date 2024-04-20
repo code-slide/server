@@ -1,4 +1,3 @@
-import EventEmitter from 'node:events';
 import * as fs from 'node:fs';
 
 export default (() => {

@@ -1,9 +1,9 @@
 import io
 import sys
 
-def get_script(script: str):
+def get_script(script: str) -> tuple[str, str]:
     """
-    Find the dynamic script in the input, which follows by identifier <Python> and <Graph>
+    Find the dynamic script in the input, which follows by identifier <Python>
 
     Params:
         script (str): input script
@@ -40,7 +40,7 @@ def get_script(script: str):
 
     return code, script
 
-def embed_script(script: str):
+def embed_script(script: str) -> str:
     """
     Find, execute, and return printing strings from Python codes.
 
@@ -123,7 +123,7 @@ def parse_frames(script):
     script = embed_script(script).replace("\n", "").strip()
 
     for i in range(len(script)):
-        # Set is_bracket = True if see '{}'
+        # Set is_bracket = True if see '{'
         if script[i] == '{':
             is_bracket = True
 

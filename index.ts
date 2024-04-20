@@ -5,7 +5,6 @@ import expressWebsockets from 'express-ws';
 import path from 'path';
 import fileStore from './fileStore';
 import { spawnPython, execPython } from './utils/script';
-import { exec } from 'child_process';
 
 const serverPort = parseInt(process.env.PORT || process.env.SERVER_PORT || '8080');
 const storageBucket: typeof fileStore = fileStore;
