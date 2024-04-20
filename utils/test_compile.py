@@ -109,8 +109,8 @@ def test_json_to_html():
 					    <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 {data['size'][0]} {data['size'][1]}\">\n \
 <g class=\"fragment fade-out\" data-fragment-index=\"{1}\"> {data['frame'][0][0]} </g>\n \
 <g class=\"fragment fade-out\" data-fragment-index=\"{1}\"> {data['frame'][0][1]} </g>\n \
-<g class=\"fragment fade-in-then-out\" data-fragment-index=\"{2}\"> {data['frame'][1][0]} </g>\n \
-<g class=\"fragment\" data-fragment-index=\"{3}\"> {data['frame'][2][0]} </g>\n \
+<g class=\"fragment fade-in-then-out\" data-fragment-index=\"{1}\"> {data['frame'][1][0]} </g>\n \
+<g class=\"fragment\" data-fragment-index=\"{2}\"> {data['frame'][2][0]} </g>\n \
 </svg>\n \
                     </div>\n \
                 </section>\n \

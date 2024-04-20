@@ -136,9 +136,9 @@ def json_to_html(json_data: dict) -> str:
             if i == 0:
                 html_output += f'<g class=\"fragment fade-out\" data-fragment-index=\"{i+1}\"> {svg} </g>\n ' 
             elif i == len(frames) - 1:
-                html_output += f'<g class=\"fragment\" data-fragment-index=\"{i+1}\"> {svg} </g>\n ' 
+                html_output += f'<g class=\"fragment\" data-fragment-index=\"{i}\"> {svg} </g>\n ' 
             else:
-                html_output += f'<g class=\"fragment fade-in-then-out\" data-fragment-index=\"{i+1}\"> {svg} </g>\n '
+                html_output += f'<g class=\"fragment fade-in-then-out\" data-fragment-index=\"{i}\"> {svg} </g>\n '
     			
     html_output += f"</svg>\n \
                     </div>\n \
