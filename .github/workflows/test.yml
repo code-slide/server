@@ -1,0 +1,50 @@
+name: Build & Test
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+jobs:
+  build:
+    permissions: write-all
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Prepare - Checkout
+        uses: actions/checkout@v4.0.0
+
+      - name: Prepare - Inject short Variables
+        uses: rlespinasse/github-slug-action@v4.4.1
+
+      - name: Prepare - Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Prepare - Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Prepare - Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2.10.0
+
+      - name: Test - Run tests and collect coverage
+        run: pytest --cov=utils utils/
+
+      - name: Test - Run tests again
+        run: pytest --cov=utils utils/
+
+      - name: Test - Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: code-slide/server
+
+      - name: Build - BUILD
+        uses: docker/build-push-action@v4.2.1
+        with:
+          load: true
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
+          tags: on-local

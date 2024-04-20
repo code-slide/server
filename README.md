@@ -10,3 +10,8 @@ These are the programs located on the backend of [codeslide.net](https://www.cod
 docker build -t codeslide/dev --build-arg "ENV=DEV" .
 docker run --name codeslide -d -p 8001:5001 -v ${PWD}/tmp:/codeslide/tmp codeslide/dev
 ```
+
+## Testing instruction
+```
+pytest --cov=utils --cov-report term-missing utils/
+```

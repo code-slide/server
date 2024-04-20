@@ -1,10 +1,7 @@
-name: Server
+name: Build & Deploy
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
     branches:
       - main
 
@@ -27,6 +24,26 @@ jobs:
       - name: Prepare - Install Heroku CLI
         run: |
           curl https://cli-assets.heroku.com/install.sh | sh
+
+      - name: Prepare - Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Prepare - Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Test - Run tests and collect coverage
+        run: pytest --cov app
+
+      - name: Test - Run tests again
+        run: pytest --cov app
+
+      - name: Test - Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: code-slide/server
 
       - name: Build - BUILD
         uses: docker/build-push-action@v4.2.1
