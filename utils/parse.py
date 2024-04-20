@@ -21,7 +21,7 @@ def get_script(script: str) -> tuple[str, str]:
     # Get Python code
     for i in range(len(script)):
         # Flip quoting bool if start/end quotating
-        if script[i] == '\'' or script[i] == '\"' or script[i] == '\`':
+        if script[i] == '\'' or script[i] == '\"' or script[i] == '`':
             not_quoting = not not_quoting
 
         # Set start index if start timing and not quotating
