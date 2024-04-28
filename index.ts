@@ -1,3 +1,11 @@
+/*
+ * api.codeslide.net
+ *
+ * @license
+ * Forked from mydraft.cc by Sebastian Stehle
+ * Copyright (c) Do Duc Quan. All rights reserved.
+*/
+
 import 'dotenv/config'
 import cors from 'cors';
 import express from 'express';

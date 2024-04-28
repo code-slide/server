@@ -1,3 +1,11 @@
+#
+# api.codeslide.net
+# 
+# @license
+# Forked from mydraft.cc by Sebastian Stehle
+# Copyright (c) Do Duc Quan. All rights reserved.
+# 
+
 import pytest
 from parse import get_script, embed_script, set_frame, parse_frames
 

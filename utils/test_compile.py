@@ -1,3 +1,11 @@
+#
+# api.codeslide.net
+# 
+# @license
+# Forked from mydraft.cc by Sebastian Stehle
+# Copyright (c) Do Duc Quan. All rights reserved.
+# 
+
 import pytest
 from compile import json_to_html, validate_color, validate_config, validate_frame, validate_size, validate_title
 
