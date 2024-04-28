@@ -13,7 +13,7 @@ export const spawnPython = (filePath: string, script: string) => {
             resolve(result);
         });
         python.on('error', (err: any) => {
-            reject(err);
+            reject(new Error(`${err}`));
         });
     })
 };

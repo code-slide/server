@@ -1,3 +1,4 @@
+import ast
 import io
 import sys
 
@@ -51,13 +52,14 @@ def embed_script(script: str) -> str:
         output (str): string obtained from running identified Python code
     """
     py_script, output = get_script(script)
+    print(py_script)
 
     # Redirect stdout to an in-memory buffer
     out_buffer = io.StringIO()
     sys.stdout = out_buffer
 
     # Execute code and retrieve printing values
-    code = compile(py_script, 'mulstring', 'exec')
+    code = compile(py_script, '<string>', 'exec')
     exec(code)
     output += out_buffer.getvalue()
 

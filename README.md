@@ -1,6 +1,6 @@
 # CodeSlide's Server
 
-[![Build & Deploy](https://github.com/code-slide/server/actions/workflows/server.yml/badge.svg)](https://github.com/code-slide/server/actions/workflows/build.yml)
+[![Build & Deploy](https://github.com/code-slide/server/actions/workflows/build.yml/badge.svg)](https://github.com/code-slide/server/actions/workflows/build.yml)
 [![codecov](https://codecov.io/gh/code-slide/server/graph/badge.svg?token=1OG05QNPIL)](https://codecov.io/gh/code-slide/server)
 
 These are the programs located on the backend of [codeslide.net](https://www.codeslide.net).

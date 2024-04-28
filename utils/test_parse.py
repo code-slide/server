@@ -6,8 +6,8 @@ def test_get_script():
     Test get_script function
     """
     # Passed,  with Python code
-    script = "<Python>print('Hello, World!')"
-    expected_code = "print('Hello, World!')"
+    script = "<Python>print('Hello, World!')\nprint('Hi')"
+    expected_code = "print('Hello, World!')\nprint('Hi')"
     expected_script = ""
     actual_code, actual_script = get_script(script)
     
@@ -59,6 +59,13 @@ def test_embed_script():
     
     assert actual_output == expected_output
 
+    # Passed, with no code
+    script = ""
+    expected_output = ""
+    actual_output = embed_script(script)
+    
+    assert actual_output == expected_output
+
     # Passed, with no Python tag
     script = "print('<1> Object1')"
     expected_output = "print('<1> Object1')"
@@ -66,12 +73,16 @@ def test_embed_script():
     
     assert actual_output == expected_output
 
-    # Passed, with no code
-    script = ""
-    expected_output = ""
-    actual_output = embed_script(script)
-    
-    assert actual_output == expected_output
+    # Failed, with incomplete Python code
+    script = "<Python> print('Hello, World!'"
+    with pytest.raises(SyntaxError):
+        embed_script(script)
+
+    # Failed, with incorrect spacing in Python code
+    script = "<Python> print('Hello, World!')\n    print('Hi')"
+    with pytest.raises(SyntaxError):
+        embed_script(script)
+
 
 def test_set_frame():
     """

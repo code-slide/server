@@ -38,9 +38,14 @@ app.post('/parser', async (req, res) => {
     script = script.replace('&gt;', '>');
 
     // Send parsed frames to client
-    const frames = await spawnPython('utils/parse.py', script);
-    if (!frames) return res.status(400);
-    return res.status(200).json({ frames: `${frames}`.trim() });
+    const frames = spawnPython('utils/parse.py', script);
+    frames
+        .then((frames) => {
+            return res.status(200).json({ frames: `${frames}`.trim() });
+        })
+        .catch(() => {
+            return res.status(400);
+        });
 });
 
 app.post('/compiler', async (req, res) => {
@@ -50,7 +55,7 @@ app.post('/compiler', async (req, res) => {
 
     // Write json
     const file  = storageBucket.file(`${fileName}.json`);
-    await file.save(JSON.stringify(data, null, 2), {
+    file.save(JSON.stringify(data, null, 2), {
         metadata: {
             contentType: 'application/json',
             contentLength: undefined,
@@ -58,12 +63,17 @@ app.post('/compiler', async (req, res) => {
     });
 
     // Write html and send presentation link to client
-    await execPython('utils/compile.py', `${TEMP}/${fileName}.json`, `${TEMP}/${fileName}.html`);
-
-    return res.status(200).json({ 
-        slidePath: `s/${fileName}`,
-        pdfPath: `s/${fileName}?print-pdf`
-    });
+    const presentHtml = execPython('utils/compile.py', `${TEMP}/${fileName}.json`, `${TEMP}/${fileName}.html`);
+    presentHtml
+        .then(() => {
+            return res.status(200).json({ 
+                slidePath: `s/${fileName}`,
+                pdfPath: `s/${fileName}?print-pdf`
+            });
+        })
+        .catch(() => {
+            return res.status(400);
+        });
 });
 
 // Serving presentation through reveal.js
