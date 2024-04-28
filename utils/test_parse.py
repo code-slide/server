@@ -1,3 +1,11 @@
+#
+# api.codeslide.net
+# 
+# @license
+# Forked from mydraft.cc by Sebastian Stehle
+# Copyright (c) Do Duc Quan. All rights reserved.
+# 
+
 import pytest
 from parse import get_script, embed_script, set_frame, parse_frames
 
@@ -6,8 +14,8 @@ def test_get_script():
     Test get_script function
     """
     # Passed,  with Python code
-    script = "<Python>print('Hello, World!')"
-    expected_code = "print('Hello, World!')"
+    script = "<Python>print('Hello, World!')\nprint('Hi')"
+    expected_code = "print('Hello, World!')\nprint('Hi')"
     expected_script = ""
     actual_code, actual_script = get_script(script)
     
@@ -59,6 +67,13 @@ def test_embed_script():
     
     assert actual_output == expected_output
 
+    # Passed, with no code
+    script = ""
+    expected_output = ""
+    actual_output = embed_script(script)
+    
+    assert actual_output == expected_output
+
     # Passed, with no Python tag
     script = "print('<1> Object1')"
     expected_output = "print('<1> Object1')"
@@ -66,12 +81,16 @@ def test_embed_script():
     
     assert actual_output == expected_output
 
-    # Passed, with no code
-    script = ""
-    expected_output = ""
-    actual_output = embed_script(script)
-    
-    assert actual_output == expected_output
+    # Failed, with incomplete Python code
+    script = "<Python> print('Hello, World!'"
+    with pytest.raises(SyntaxError):
+        embed_script(script)
+
+    # Failed, with incorrect spacing in Python code
+    script = "<Python> print('Hello, World!')\n    print('Hi')"
+    with pytest.raises(SyntaxError):
+        embed_script(script)
+
 
 def test_set_frame():
     """
@@ -162,5 +181,10 @@ def test_parse_frames():
 
     # Failed, with syntax after python tag
     script = "<1-> Object1 \n <Python>print('<2> Object2') \n <2> Object2"
+    with pytest.raises(Exception):
+        parse_frames(script)
+
+    # Failed, with unknown variable
+    script = "<1-> Object1 \n <Python>print(<2> Object2)"
     with pytest.raises(Exception):
         parse_frames(script)

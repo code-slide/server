@@ -1,3 +1,11 @@
+#
+# api.codeslide.net
+# 
+# @license
+# Forked from mydraft.cc by Sebastian Stehle
+# Copyright (c) Do Duc Quan. All rights reserved.
+# 
+
 import io
 import sys
 
@@ -57,7 +65,7 @@ def embed_script(script: str) -> str:
     sys.stdout = out_buffer
 
     # Execute code and retrieve printing values
-    code = compile(py_script, 'mulstring', 'exec')
+    code = compile(py_script, '<string>', 'exec')
     exec(code)
     output += out_buffer.getvalue()
 

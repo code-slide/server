@@ -1,3 +1,11 @@
+/*
+ * api.codeslide.net
+ *
+ * @license
+ * Forked from mydraft.cc by Sebastian Stehle
+ * Copyright (c) Do Duc Quan. All rights reserved.
+*/
+
 import { spawn, exec } from 'child_process';
 
 export const spawnPython = (filePath: string, script: string) => {
@@ -13,7 +21,7 @@ export const spawnPython = (filePath: string, script: string) => {
             resolve(result);
         });
         python.on('error', (err: any) => {
-            reject(err);
+            reject(new Error(`${err}`));
         });
     })
 };
