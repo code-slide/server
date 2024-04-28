@@ -175,3 +175,8 @@ def test_parse_frames():
     script = "<1-> Object1 \n <Python>print('<2> Object2') \n <2> Object2"
     with pytest.raises(Exception):
         parse_frames(script)
+
+    # Failed, with unknown variable
+    script = "<1-> Object1 \n <Python>print(<2> Object2)"
+    with pytest.raises(Exception):
+        parse_frames(script)

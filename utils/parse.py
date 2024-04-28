@@ -52,7 +52,6 @@ def embed_script(script: str) -> str:
         output (str): string obtained from running identified Python code
     """
     py_script, output = get_script(script)
-    print(py_script)
 
     # Redirect stdout to an in-memory buffer
     out_buffer = io.StringIO()
