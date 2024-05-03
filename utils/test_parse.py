@@ -13,7 +13,7 @@ def test_get_script():
     """
     Test get_script function
     """
-    # Passed,  with Python code
+    # Passed, with Python code
     script = "<Python>print('Hello, World!')\nprint('Hi')"
     expected_code = "print('Hello, World!')\nprint('Hi')"
     expected_script = ""
@@ -144,39 +144,114 @@ def test_parse_frames():
     
     assert actual_frames == expected_frames
 
-    # Passed, with from-to and multi syntax
-    script = "<1-3> Object1 \n <Python>print('<2,4> Object2')"
-    expected_frames = [["Object1"], ["Object1", "Object2"], ["Object1"], ["Object2"]]
+    # Passed, with from-to syntax
+    script = "<1-3> Object1 \n <Python>print('<2-4> Object2')"
+    expected_frames = [["Object1"], ["Object1", "Object2"], ["Object1", "Object2"], ["Object2"]]
     actual_frames = parse_frames(script)
     
     assert actual_frames == expected_frames
 
-    # Passed, with infinity syntax
-    script = "<1-> Object1 \n <Python>print('<2> Object2')"
-    expected_frames = [["Object1"], ["Object1", "Object2"]]
+    # Passed, with multi syntax
+    script = "<1,3,5> Object1 \n <Python>print('<2,4,6> Object2')"
+    expected_frames = [["Object1"], ["Object2"], ["Object1"], ["Object2"], ["Object1"], ["Object2"]]
     actual_frames = parse_frames(script)
     
     assert actual_frames == expected_frames
 
-    # Passed, with assignment
+    # Passed, with single infinity syntax (1)
+    script = "<3-> Object1 \n <Python>print('<4> Object2')"
+    expected_frames = [[], [], ["Object1"], ["Object1", "Object2"]]
+    actual_frames = parse_frames(script)
+    
+    assert actual_frames == expected_frames
+
+    # Passed, with single infinity syntax (2)
+    script = "<4> Object2 \n <Python>print('<3-> Object1')"
+    expected_frames = [[], [], ["Object1"], ["Object2", "Object1"]]
+    actual_frames = parse_frames(script)
+    
+    assert actual_frames == expected_frames
+
+    # Passed, with multiple infinity syntax (1)
+    script = "<3-> Object1 \n <Python>print('<4-> Object2')"
+    expected_frames = [[], [], ["Object1"], ["Object1", "Object2"]]
+    actual_frames = parse_frames(script)
+    
+    assert actual_frames == expected_frames
+
+    # Passed, with multiple infinity syntax (2)
+    script = "<4-> Object2 \n <Python>print('<3-> Object1')"
+    expected_frames = [[], [], ["Object1"], ["Object2", "Object1"]]
+    actual_frames = parse_frames(script)
+    
+    assert actual_frames == expected_frames
+
+    # Passed, with assignment (1)
     script = "<1> Object2 \n <Python>print('<2> Object1 = {\"TEXT\": \"Hello, world!\"}')"
     expected_frames = [["Object2"], ["Object1={\"TEXT\": \"Hello, world!\"}"]]
     actual_frames = parse_frames(script)
     
     assert actual_frames == expected_frames
 
-    # Passed, with no overriding
+    # Passed, with assignment (2)
+    script = "<2> Object1 = {\"TEXT\": \"Hello, world!\"} \n <Python>print('<1> Object2')"
+    expected_frames = [["Object2"], ["Object1={\"TEXT\": \"Hello, world!\"}"]]
+    actual_frames = parse_frames(script)
+    
+    assert actual_frames == expected_frames
+
+    # Passed, with overriding (1)
+    script = "<1> Object1 \n <Python>print('<1> Object1 = {\"TEXT\": \"Hello, world!\"}')"
+    expected_frames = [["Object1", "Object1={\"TEXT\": \"Hello, world!\"}"]]
+    actual_frames = parse_frames(script)
+    
+    assert actual_frames == expected_frames
+
+    # Passed, with overriding (2)
     script = "<1> Object1 = {\"TEXT\": \"Hello, world!\"} \n <Python>print('<1> Object1')"
     expected_frames = [["Object1={\"TEXT\": \"Hello, world!\"}", "Object1"]]
     actual_frames = parse_frames(script)
     
     assert actual_frames == expected_frames
 
-    # Passed, with infinite objects
-    script = "<1-> Object1 \n <Python>print('<2> Object2')"
-    expected_frames = [["Object1"], ["Object1", "Object2"]]
+    # Passed, with multi syntax including from-to (1)
+    script = "<1,3-4> Object1 \n <Python>print('<2,5-6> Object2')"
+    expected_frames = [["Object1"], ["Object2"], ["Object1"], ["Object1"], ["Object2"], ["Object2"]]
     actual_frames = parse_frames(script)
     
+    assert actual_frames == expected_frames
+
+    # Passed, with multi syntax including from-to (2)
+    script = "<3-4,1> Object1 \n <Python>print('<5-6,2> Object2')"
+    expected_frames = [["Object1"], ["Object2"], ["Object1"], ["Object1"], ["Object2"], ["Object2"]]
+    actual_frames = parse_frames(script)
+    
+    assert actual_frames == expected_frames
+
+    # Passed, with multi syntax including infinite (1)
+    script = "<1,3-> Object1 \n <Python>print('<2,4-> Object2')"
+    expected_frames = [["Object1"], ["Object2"], ["Object1"], ["Object1", "Object2"]]
+    actual_frames = parse_frames(script)
+
+    assert actual_frames == expected_frames
+
+    # Passed, with multi syntax including infinite (2)
+    script = "<3-,1> Object1 \n <Python>print('<4-,2> Object2')"
+    expected_frames = [["Object1"], ["Object2"], ["Object1"], ["Object1", "Object2"]]
+    actual_frames = parse_frames(script)
+
+    # Passed, with multi syntax including both infinite & from-to (1)
+    script = "<1-2,3-> Object1 \n <Python>print('<2-3,4-> Object2')"
+    expected_frames = [["Object1"], ["Object1", "Object2"], ["Object1", "Object2"], ["Object1", "Object2"]]
+    actual_frames = parse_frames(script)
+
+    assert actual_frames == expected_frames
+
+    # Passed, with multi syntax including both infinite & from-to (2)
+    script = "<3-,1-2> Object1 \n <Python>print('<4-,2-3> Object2')"
+    expected_frames = [["Object1"], ["Object1", "Object2"], ["Object1", "Object2"], ["Object1", "Object2"]]
+    actual_frames = parse_frames(script)
+
     assert actual_frames == expected_frames
 
     # Failed, with syntax after python tag

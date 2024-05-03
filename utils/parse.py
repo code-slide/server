@@ -167,8 +167,9 @@ def parse_frames(script):
             if is_next and to_index == '':
                 is_eof = True
 
-            # Continue if indexes are not number (e.g. Python, Graph)
+            # Add index to indexes and extend frames if needed
             start = int(fr_index)
+            frames = set_frame(frames, range(len(frames), start + 1), eofs, [])
             end = int(to_index) if to_index != '' else len(frames) if is_next else start
             indexes += range(start, end + 1)
 
@@ -178,11 +179,13 @@ def parse_frames(script):
             if script[i] == '>':
                 is_timing = False
                 is_next = False
+            elif script[i] == ',':
+                is_next = False
 
         elif script[i] == ',' and not (is_timing or is_bracket):
             curr_index += 1
             curr_object.append('')
-        
+
         # Otherwise, append char to to_index/fr_index/curr_object
         elif script[i] != ' ':
             if is_timing:
