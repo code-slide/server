@@ -91,6 +91,10 @@ def test_embed_script():
     with pytest.raises(SyntaxError):
         embed_script(script)
 
+    # Failed, with non-included library import
+    script = "<Python> import pandas as pd \nprint(pd.DataFrame([1, 2, 3]))"
+    with pytest.raises(ModuleNotFoundError):
+        embed_script(script)
 
 def test_set_frame():
     """

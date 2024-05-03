@@ -12,6 +12,7 @@ import express from 'express';
 import expressWebsockets from 'express-ws';
 import path from 'path';
 import fileStore from './fileStore';
+import { version } from './package.json';
 import { spawnPython, execPython } from './utils/script';
 
 const serverPort = parseInt(process.env.PORT || process.env.SERVER_PORT || '8080');
@@ -34,7 +35,8 @@ app.all('/*', function (req, res, next) {
 
 app.get('/health', (_, response) => {
     response.send({
-        status: 'Healthy'
+        status: 'Healthy',
+        version: version
     });
 });
 
