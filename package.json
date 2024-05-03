@@ -1,6 +1,6 @@
 {
   "name": "codeslide-server",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Server for codeslide.net",
   "scripts": {
     "start": "nodemon index.ts",
@@ -8,7 +8,7 @@
     "build": "tsc && node fileCopy.js"
   },
   "author": "Do Duc Quan",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
