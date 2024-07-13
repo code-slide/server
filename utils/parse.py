@@ -66,7 +66,7 @@ def embed_script(script: str) -> str:
 
     # Execute code and retrieve printing values
     code = compile(py_script, '<string>', 'exec')
-    exec(code)
+    exec(code, globals())
     output += out_buffer.getvalue()
 
     # Restore stdout to default for print()
